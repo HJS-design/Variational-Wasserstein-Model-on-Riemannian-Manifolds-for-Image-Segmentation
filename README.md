@@ -10,6 +10,6 @@ From this directory:
 
 ```bash
 python ACDC/seg.py
-python resect/seg.py
-python brats/seg.py
+python RESECT/seg.py
+python BraTS/seg.py
 ```
