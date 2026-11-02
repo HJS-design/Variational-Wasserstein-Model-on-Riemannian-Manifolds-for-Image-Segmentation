@@ -1,11 +1,8 @@
 # Variational Wasserstein Model on Riemannian Manifolds for Image Segmentation
 
-
-
 ## Environment
 
-Representation of Riemannian manifold, calculation of OT on it is both expensive. Therefore we use Cupy with Cuda to speed up. Please make sure you have a GPU, otherwise the code can not run. You can use Codex to rad the code and install all dependency automatically.
-
+Representing a Riemannian manifold and computing optimal transport (OT) on it are both computationally expensive. Therefore, we use CuPy with CUDA to accelerate these computations. An NVIDIA GPU is required to run the code. You can use Codex to read the code and install all required dependencies automatically.
 
 ## Run a case
 
@@ -16,5 +13,3 @@ python ACDC/seg.py
 python resect/seg.py
 python brats/seg.py
 ```
-
-
