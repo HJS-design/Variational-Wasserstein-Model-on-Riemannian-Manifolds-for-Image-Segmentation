@@ -1,10 +1,4 @@
-"""Six-neighbour geodesic graphs for the case31 segmentation pipeline.
 
-Inputs are aligned 3-D feature, region and seed arrays prepared by the runner.
-Region IDs are contiguous and one based; seeds use 1 for foreground and 2 for
-background. Volumes use Fortran voxel order to match the CUDA kernels, and
-distance tables are C-contiguous arrays of shape (targets, voxels).
-"""
 from __future__ import annotations
 
 from concurrent.futures import ProcessPoolExecutor
@@ -62,12 +56,7 @@ def _region_means(labels: NDArray[np.int32], values: FloatArray,
 
 def _region_feature_means(labels: NDArray[np.int32], values: FloatArray,
                           counts: NDArray[np.int64]) -> FloatArray:
-    """Grouped feature means with the reference result's accumulation order.
-
-    Four interleaved sums retain the existing floating-point values. A single
-    bincount changes distances and, on the current data, the returned u.
-    The runner's current regions all contain at least 111 voxels.
-    """
+    
     order = np.argsort(labels, kind="stable")
     starts = np.cumsum(counts) - counts
     positions = np.arange(labels.size) - np.repeat(starts, counts)
@@ -262,12 +251,7 @@ def _dijkstra_worker(graph_specs, graph_shape, sources, output_spec, row_start):
 
 
 def _target_distances(graph, sources, voxel_count, *, workers=None):
-    """Parallelize large source sets; preserve SciPy's per-source arithmetic.
-
-    Processes share CSR data and write disjoint output rows. Small problems
-    stay serial because process startup and copying would cost more than the
-    shortest-path computation. Four workers match the reference's CPU budget.
-    """
+    
     if workers is None:
         workers = min(4, os.cpu_count() or 1) if sources.size * voxel_count >= 100_000_000 else 1
     workers = min(workers, sources.size)

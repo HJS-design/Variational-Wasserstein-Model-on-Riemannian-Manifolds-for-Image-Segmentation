@@ -1,9 +1,3 @@
-"""CuPy solver with Python-written GPU kernels for transport and TV updates.
-
-Iterative numerical work, including MT19937 sampling and ordered source CDFs,
-runs on the GPU. Separate float64 multiply/add rounding preserves the reference
-results. Volumes use Fortran voxel order; distance tables are (targets, voxels).
-"""
 
 
 from __future__ import annotations
