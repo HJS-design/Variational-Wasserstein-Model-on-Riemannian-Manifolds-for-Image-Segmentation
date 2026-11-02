@@ -48,6 +48,16 @@ def main():
     mask = itk.image_from_array(np.ascontiguousarray((u > 0.5).astype(np.uint8).transpose(2, 1, 0)))
     mask.CopyInformation(image)
     itk.imwrite(mask, str(output / "segmentation.nii.gz"))
+
+    ground_truth = itk.imread(str(CASE_ROOT / "gt.nii.gz"))
+    truth = itk.array_from_image(ground_truth) > 0
+    prediction = itk.array_from_image(mask) > 0
+    if prediction.shape != truth.shape:
+        raise ValueError("Segmentation and ground truth must have the same shape.")
+    total = int(np.count_nonzero(prediction)) + int(np.count_nonzero(truth))
+    intersection = int(np.count_nonzero(prediction & truth))
+    dice = 2.0 * intersection / total if total else 1.0
+    print(f"Dice: {dice:.6f}")
     return u
 
 
